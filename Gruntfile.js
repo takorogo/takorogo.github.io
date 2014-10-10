@@ -401,7 +401,8 @@ module.exports = function (grunt) {
         // GitHub Pages settings
         'gh-pages': {
             options: {
-                base: 'dist'
+                base: 'dist',
+                branch: 'master'
             },
             src: ['**']
         },
