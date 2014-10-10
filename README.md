@@ -7,10 +7,9 @@ This is the repository for the Takorogo official [website](http://takorogo.githu
 Repository structure
 --------------------
 
-Developer version is stored to [`dev`](https://github.com/takorogo/takorogo.github.io/tree/dev) branch.
+Developer version is stored to [`dev`](https://github.com/takorogo/takorogo.github.io/) default repository branch.
 
-Website is deployed to GitHub Pages from [`gh-pages`](https://github.com/takorogo/takorogo.github.io/) branch which is
-repository default.
+Website is deployed to GitHub Pages from [`gh-pages`](https://github.com/takorogo/takorogo.github.io/tree/master) branch.
 
 
 Deployment
@@ -22,7 +21,7 @@ Ensure that you are in `dev` branch
 git checkout dev
 ```
 
-Deploy it to `gh-pages` with Grunt
+Deploy it to `master` with Grunt
 
 ```bash
 grunt deploy

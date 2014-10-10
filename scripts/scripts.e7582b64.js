@@ -1,1 +1,0 @@
-"use strict";angular.module("takorogoApp",["ngAnimate","ngCookies","ngSanitize","ngTouch"]),angular.module("takorogoApp").controller("MainCtrl",["$scope",function(a){a.awesomeThings=["HTML5 Boilerplate","AngularJS","Karma"]}]);

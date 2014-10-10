@@ -1,1 +1,32 @@
-<div class="jumbotron"> <h1>'Allo, 'Allo!</h1> <p class="lead"> <img src="images/yeoman.d2754b85.png" alt="I'm Yeoman"><br> Always a pleasure scaffolding your apps. </p> <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p> </div> <div class="row marketing"> <h4>HTML5 Boilerplate</h4> <p> HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites. </p> <h4>Angular</h4> <p> AngularJS is a toolset for building the framework most suited to your application development. </p> <h4>Karma</h4> <p>Spectacular Test Runner for JavaScript.</p> </div>
+<div class="row"> <div class="col-md-6"> <h1>Online Parser</h1> </div> </div> <div class="row"> <div class="col-md-6"> <h3>Takorogo</h3> <textarea ui-codemirror="cmTakorogoOptions" ng-model="takorogoText"></textarea> </div> <div class="col-md-6"> <h3>JSON Schema</h3> <textarea ui-codemirror="cmJsonSchemaOptions" ng-model="jsonSchemaText"></textarea> </div> </div> <script type="text/ng-template" id="views/schemas/tweet.html"># Metadata
+@description Tweet document returned by Twitter Stream API
+
+# Main definition for schema
+@main def Tweet {
+    UNIQUE(id_str:String)
+    UNIQUE(id:Int)
+
+    + location: String
+
+    <--[POSTED]-- user:User
+    --> metadata
+    <--[ REPLIED_WITH|REPLIED_TO ]--> in_reply_to_status_id_str => in_reply_to:Tweet
+    --[ REFERS_TO(indices[first, last]) ]--> entities.urls:Url[]
+    --[ HAS_TAG(indices[first, last]) ]--> entities.hashtags:HashTag(text)[]
+    --[ AT ]--> coordinates:Location
+    --[ ON ]--> geo:Location
+    --[ PLACED ]--> place:Place
+}
+
+# Just a point
+def Coordinates(longitude: Float, latitude: Float) [ longitude, latitude ]
+
+def Location(coordinates:Coordinates)  // Simply a wrapper for coordinates
+
+def Place {
+  --[ BOUNDED_BY ]--> bounding_box.coordinates => bounding_box:Coordinates[]
+}
+
+def User(id_str) {
+  --[REFERS_TO(indices[first, last])]--> entities.url.urls:Url[]
+}</script>
