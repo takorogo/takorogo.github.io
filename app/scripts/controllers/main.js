@@ -10,7 +10,6 @@
 angular.module('takorogoApp')
     .controller('MainCtrl', function ($scope, takorogo, $templateCache) {
         $scope.cmTakorogoOptions = {
-            lineWrapping: true,
             lineNumbers: true,
             mode: 'javascript',
             theme: 'mdn-like',
@@ -24,7 +23,6 @@ angular.module('takorogoApp')
         $scope.takorogoText = $templateCache.get('views/schemas/tweet.html') || '';
 
         $scope.cmJsonSchemaOptions = {
-            lineWrapping: true,
             lineNumbers: true,
             theme: 'mdn-like',
             readOnly: 'nocursor',
