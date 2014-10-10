@@ -4,6 +4,7 @@ Takorogo Project Website
 Repository structure
 --------------------
 
-Developer version is stored to `dev` branch.
+Developer version is stored to [`dev`](https://github.com/takorogo/takorogo.github.io/tree/dev) branch.
 
-Website is deployed to GitHub Pages from `gh-pages` branch which is repository default. 
+Website is deployed to GitHub Pages from [`gh-pages`](https://github.com/takorogo/takorogo.github.io/) branch which is
+repository default.
