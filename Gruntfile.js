@@ -370,6 +370,16 @@ module.exports = function (grunt) {
                         dest: '<%= yeoman.dist %>'
                     },
                     {
+                        // Stupid hardcoded copying of CodeMirror extras
+                        src: [
+                            'mode/javascript/javascript.js',
+                            'theme/mdn-like.css'
+                        ].map(function (path) {
+                            return 'bower_components/codemirror/' + path;
+                        }),
+                        dest: '<%= yeoman.dist %>/'
+                    },
+                    {
                         src: 'README.md',
                         dest: '<%= yeoman.dist %>/'
                     }
