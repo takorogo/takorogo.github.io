@@ -467,7 +467,7 @@ module.exports = function (grunt) {
         'build'
     ]);
 
-    grunt.registerTask('release', [
+    grunt.registerTask('deploy', [
         'test',
         'build',
         'gh-pages'
