@@ -1,5 +1,5 @@
-Takorogo Project Website
-========================
+Takorogo Project
+================
 
 This is the repository for the Takorogo official [website](http://takorogo.github.io/).
 

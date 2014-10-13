@@ -51,6 +51,10 @@ module.exports = function (grunt) {
             gruntfile: {
                 files: ['Gruntfile.js']
             },
+            readme: {
+                files: ['README.md'],
+                tasks: ['shell:markdown']
+            },
             livereload: {
                 options: {
                     livereload: '<%= connect.options.livereload %>'
@@ -417,6 +421,16 @@ module.exports = function (grunt) {
             src: ['**']
         },
 
+        // Shell scripts
+        shell: {
+            options: {
+                stderr: false
+            },
+            markdown: {
+                command: './utils/markup_render.rb ./README.md ./app/views/README.md.html'
+            }
+        },
+
         // Test settings
         karma: {
             unit: {
@@ -434,6 +448,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'shell:markdown',
             'wiredep',
             'concurrent:server',
             'autoprefixer',
@@ -449,6 +464,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
+        'shell:markdown',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
@@ -457,6 +473,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'shell:markdown',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',
