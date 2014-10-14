@@ -149,6 +149,7 @@ module.exports = function (grunt) {
                 ]
             },
             server: '.tmp',
+            coverage: 'coverage',
             wiki: 'wiki'
         },
 
@@ -441,6 +442,23 @@ module.exports = function (grunt) {
                 configFile: 'test/karma.conf.js',
                 singleRun: true
             }
+        },
+
+        // Coveralls.io
+        coveralls: {
+            local: {
+                dryRun: true
+            },
+            ci: {
+                dryRun: false,
+                force: true
+            },
+            options: {
+                debug: true,
+                'coverage_dir': 'coverage/',
+                force: false,
+                recursive: true
+            }
         }
     });
 
@@ -472,12 +490,18 @@ module.exports = function (grunt) {
         'shell:markdown'
     ]);
 
+    grunt.registerTask('ci', [
+        'test',
+        'coveralls:ci'
+    ]);
+
     grunt.registerTask('test', [
         'clean:server',
         'wiki',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
+        'clean:wiki',
         'karma'
     ]);
 

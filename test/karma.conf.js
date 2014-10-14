@@ -52,10 +52,25 @@ module.exports = function (config) {
             'PhantomJS'
         ],
 
+        // Set reporter required by Coveralls.iop
+        reporters: ['coverage'],
+
+        // Configure preprocessor to look at dist files
+        preprocessors: {
+            "**/lib/*js": "coverage"
+        },
+
+        // Configure coverage reporter
+        coverageReporter: {
+            type: "lcov",
+            dir: "coverage/"
+        },
+
         // Which plugins to enable
         plugins: [
             'karma-phantomjs-launcher',
-            'karma-jasmine'
+            'karma-jasmine',
+            'karma-coverage'
         ],
 
         // Continuous Integration mode
