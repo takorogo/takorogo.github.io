@@ -437,6 +437,9 @@ module.exports = function (grunt) {
             },
             wiki: {
                 command: 'curl https://raw.githubusercontent.com/wiki/takorogo/takorogo.github.io/Home.md -o wiki/Home.md'
+            },
+            list: {
+                command: 'ls -la ./wiki'
             }
         },
 
@@ -492,6 +495,7 @@ module.exports = function (grunt) {
         'clean:wiki',
         'shell:wikiDir',
         'shell:wiki',
+        'shell:list',
         'shell:markdown'
     ]);
 
