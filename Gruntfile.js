@@ -430,16 +430,17 @@ module.exports = function (grunt) {
                 stdout: true
             },
             markdown: {
-                command: './utils/markup_render.rb ./wiki/HOME.md ./app/views/README.md.html'
+                command: [
+                    './utils/markup_render.rb',
+                    __dirname + '/wiki/HOME.md',
+                    __dirname + '/app/views/README.md.html'
+                ].join(' ')
             },
             wikiDir: {
                 command: 'mkdir wiki'
             },
             wiki: {
                 command: 'curl https://raw.githubusercontent.com/wiki/takorogo/takorogo.github.io/Home.md -o wiki/Home.md'
-            },
-            list: {
-                command: 'ls -la ./wiki'
             }
         },
 
@@ -495,7 +496,6 @@ module.exports = function (grunt) {
         'clean:wiki',
         'shell:wikiDir',
         'shell:wiki',
-        'shell:list',
         'shell:markdown'
     ]);
 
