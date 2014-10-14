@@ -431,8 +431,11 @@ module.exports = function (grunt) {
             markdown: {
                 command: './utils/markup_render.rb ./wiki/HOME.md ./app/views/README.md.html'
             },
+            wikiDir: {
+                command: 'mkdir wiki'
+            },
             wiki: {
-                command: 'git clone git@github.com:takorogo/takorogo.github.io.wiki.git wiki'
+                command: 'curl https://raw.githubusercontent.com/wiki/takorogo/takorogo.github.io/Home.md -o wiki/Home.md'
             }
         },
 
@@ -486,6 +489,7 @@ module.exports = function (grunt) {
     
     grunt.registerTask('wiki', [
         'clean:wiki',
+        'shell:wikiDir',
         'shell:wiki',
         'shell:markdown'
     ]);
