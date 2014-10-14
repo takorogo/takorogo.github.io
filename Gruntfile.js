@@ -432,7 +432,7 @@ module.exports = function (grunt) {
             markdown: {
                 command: [
                     './utils/markup_render.rb',
-                    __dirname + '/wiki/HOME.md',
+                    __dirname + '/wiki/Home.md',
                     __dirname + '/app/views/README.md.html'
                 ].join(' ')
             },
@@ -440,7 +440,7 @@ module.exports = function (grunt) {
                 command: 'mkdir wiki'
             },
             wiki: {
-                command: 'curl https://raw.githubusercontent.com/wiki/takorogo/takorogo.github.io/Home.md -o wiki/Home.md'
+                command: 'curl https://raw.githubusercontent.com/wiki/takorogo/takorogo.github.io/HOME.md -o wiki/Home.md'
             }
         },
 

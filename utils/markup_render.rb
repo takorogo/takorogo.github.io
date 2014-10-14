@@ -8,9 +8,6 @@ unless ARGV.length == 2
   exit
 end
 
-puts 'Files in wiki dir:'
-puts Dir['./wiki/*.*']
-
 input_file = ARGV[0]
 output_file = ARGV[1]
 
