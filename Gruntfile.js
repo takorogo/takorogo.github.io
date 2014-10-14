@@ -506,7 +506,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
-        'wiki',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
