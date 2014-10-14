@@ -53,7 +53,7 @@ module.exports = function (grunt) {
             },
             readme: {
                 files: ['README.md'],
-                tasks: ['shell:markdown']
+                tasks: ['wiki']
             },
             livereload: {
                 options: {
@@ -148,7 +148,8 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            server: '.tmp'
+            server: '.tmp',
+            wiki: 'wiki'
         },
 
         // Add vendor prefixed styles
@@ -427,7 +428,10 @@ module.exports = function (grunt) {
                 stderr: false
             },
             markdown: {
-                command: './utils/markup_render.rb ./README.md ./app/views/README.md.html'
+                command: './utils/markup_render.rb ./wiki/HOME.md ./app/views/README.md.html'
+            },
+            wiki: {
+                command: 'git clone git@github.com:takorogo/takorogo.github.io.wiki.git wiki'
             }
         },
 
@@ -448,7 +452,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-            'shell:markdown',
+            'wiki',
             'wiredep',
             'concurrent:server',
             'autoprefixer',
@@ -461,10 +465,16 @@ module.exports = function (grunt) {
         grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
         grunt.task.run(['serve:' + target]);
     });
+    
+    grunt.registerTask('wiki', [
+        'clean:wiki',
+        'shell:wiki',
+        'shell:markdown'
+    ]);
 
     grunt.registerTask('test', [
         'clean:server',
-        'shell:markdown',
+        'wiki',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
@@ -473,7 +483,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'shell:markdown',
+        'wiki',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',

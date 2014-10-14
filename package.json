@@ -20,7 +20,7 @@
     "url": "https://github.com/takorogo/takorogo.github.io/issues"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "node_modules/.bin/grunt ci"
   },
   "dependencies": {},
   "devDependencies": {
