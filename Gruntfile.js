@@ -426,7 +426,8 @@ module.exports = function (grunt) {
         // Shell scripts
         shell: {
             options: {
-                stderr: false
+                stderr: true,
+                stdout: true
             },
             markdown: {
                 command: './utils/markup_render.rb ./wiki/HOME.md ./app/views/README.md.html'
