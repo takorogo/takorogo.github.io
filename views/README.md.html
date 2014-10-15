@@ -1,1 +1,80 @@
-<p>Not Found</p>
+<h1>Takorogo</h1> <p>Takorogo is a declarative language that describes how documents can be represented as graphs with syntax inspired by <a href="http://www.neo4j.org/learn/cypher">Cypher</a>.</p> <!-- START doctoc generated TOC please keep comment here to allow auto update --> <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE --> <h2>Table of Contents</h2> <ul> <li><a href="#basic-concepts-&amp;-goals">Basic concepts &amp; goals</a></li> <li><a href="#the-mystery-of-the-name">The Mystery Of The Name</a></li> <li><a href="#syntax-&amp;-grammar">Syntax &amp; Grammar</a> <ul> <li><a href="#comments">Comments</a></li> <li><a href="#numbers">Numbers</a></li> <li><a href="#symbolic-names">Symbolic Names</a></li> <li><a href="#nodes">Nodes</a></li> <li><a href="#paths">Paths</a></li> <li><a href="#types">Types</a></li> <li><a href="#properties">Properties</a></li> <li><a href="#attributes">Attributes</a></li> <li><a href="#keys">Keys</a></li> <li><a href="#batch-renames">Batch Renames</a></li> <li><a href="#tuples">Tuples</a></li> <li><a href="#relations">Relations</a></li> <li><a href="#links-relation-with-resolving">Links (Relation With Resolving)</a></li> <li><a href="#anonymous-relations-and-links">Anonymous Relations And Links</a></li> <li><a href="#relation-options">Relation Options</a></li> <li><a href="#relation-definitions">Relation Definitions</a></li> <li><a href="#indexes">Indexes</a></li> <li><a href="#class-definitions">Class Definitions</a></li> <li><a href="#class-definition-rules">Class Definition Rules</a></li> <li><a href="#type-referring-namespaces-&amp;-shadowing">Type Referring, Namespaces &amp; Shadowing</a></li> </ul> </li> </ul> <!-- END doctoc generated TOC please keep comment here to allow auto update --> <h2>Basic concepts &amp; goals</h2> <ol> <li>Definition of relations should be as close to corresponding traverse queries in Cypher as possible.</li> <li>Language should be storage agnostic.</li> <li>There should be an easy way to retrieve validation schema or type definition (like JSON Schema or Scala code) for both source document and it's representations at target storage.</li> <li>Realisations are encouraged to support mixed storage like MongoDB + Neo4j.</li> </ol> <h2>The Mystery Of The Name</h2> <p>For Russian speakers Takorogo sounds like something merged from "which" and "such" addressed to neuter or masculine noun.</p> <p>The word was invented by <a href="https://ru.wikipedia.org/wiki/%D0%A1%D1%82%D0%B5%D0%BF%D0%B0%D0%BD%D0%BE%D0%B2%D0%B0,_%D0%9C%D0%B0%D1%80%D0%B8%D1%8F_%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0">Maria Stepanova</a> in her poem <a href="http://www.vavilon.ru/metatext/vavilon7/stepanova.html">Wife</a> that portrays a person who was hit by car and after that found himself in a weird mental state where he wasn't able to distinguish his previous life and possible future imagined by woman who actually caused the accident calling the man out.</p> <p>The poem itself is a versification of chanson song <a href="https://www.youtube.com/watch?v=91TgN9cpgsg">"There Is A Splendid Restaurant In The Garden"</a>.</p> <p>This was discussed by me and <a href="http://aplin.livejournal.com/">Yurii Tsaplin</a> during one of our walks in Kharkov between October 2002 and May 2003.</p> <p>In Japanese it can be spelled as "タコロゴ" which means "octopus logo" and alludes to rhizome nature of graphs. So, I prefer pseudo-Japanese pronunciation with two stresses on the first and the third syllables.</p> <h2>Syntax &amp; Grammar</h2> <p>This section describes Takorogo syntax as close as possible to it's grammar rules. You can check for grammar in the <a href="https://github.com/takorogo/node-takorogo/blob/master/data/takorogo.jison">reference implementation</a>.</p> <h3>Comments</h3> <p>There only one line comments started from "#" are supported now.</p> <p><strong>Examples</strong></p> <pre><code class="takorogo"># We can write everything before the line end
+</code></pre> <h3>Numbers</h3> <p>Only decimal with fraction part are supported now. Float and integer number are distinguished. Integers will be chosen in case of ambiguity.</p> <p><strong>Examples</strong></p> <p>Integer:</p> <pre><code class="takorogo">-3
+</code></pre> <p>Float:</p> <pre><code class="takorogo">3.0
+</code></pre> <h3>Symbolic Names</h3> <p>Symbolic name is just a sequence of latin alphabet characters, numbers, "$" and "_". Same as in other languages. Symbolic names can't start from digit.</p> <p>Reserved words can be escaped with "`".</p> <h3>Nodes</h3> <p>Node is an abstraction for something that belongs to object. It specified with symbolic names optionally combined to namespace paths (like <code>parent.user.id</code>).</p> <p><strong>Examples</strong></p> <p>The simplest way to say that we have a "name" here:</p> <pre><code class="takorogo">name
+</code></pre> <p>When issue has an author but we interesting only in it's name we can express that with:</p> <pre><code class="takorogo">issue.author.name
+</code></pre> <h3>Paths</h3> <p>Paths are nodes optionally prepended by path modifiers <code>/</code> or sequence of two or more dots like <code>...</code>. The first means the root of hierarchy and dots are treated as if <code>..</code> is a direct parent scope and each next dot means jumping to a scope above. E.g. <code>...</code> is a parent of a parent.</p> <p><strong>Examples</strong></p> <p>Absolute reference:</p> <pre><code class="takorogo">author: /User
+</code></pre> <p>Relative path:</p> <pre><code class="takorogo">author: ..Profile.User
+</code></pre> <h3>Types</h3> <p>Types are paths possibly followed by one or more pairs of square brackets with optional integer numbers between them. Semantically types refer to classes.</p> <p><strong>Examples</strong></p> <p>When we want to describe an array of coordinates we can do the following:</p> <pre><code class="takorogo">Coordinate[]
+</code></pre> <p>Matrix with 6x3 dimension can be described as:</p> <pre><code class="takorogo">Float[3][6]
+</code></pre> <h3>Properties</h3> <p>Properties refers to object members and can be used to restrict it to a certain type or methods which should be invoked and returns values of some types. We write property as a combination of node and type joined by type operator <code>:</code>.</p> <p><strong>Examples</strong></p> <p>Property <code>name</code> of type <code>String</code>:</p> <pre><code class="takorogo">name: String
+</code></pre> <p>Method <code>getName()</code> that returns <code>String</code>:</p> <pre><code class="takorogo">getName(): String
+</code></pre> <h3>Attributes</h3> <p>Attribute is a property possibly accompanied with renaming or destructuring operators and could be considered as something that semantically invariant for such transformations.</p> <p>Destructuring is a declaration of properties for items in array. Like saying that [0.23, 24.5] means x = 0.23, y = 24.5.</p> <p>Mixing renaming and destructuring is not allowed.</p> <p><strong>Examples</strong></p> <p>Property <code>age</code> of type <code>Integer</code> is a valid attribute:</p> <pre><code class="takorogo">age: Integer
+</code></pre> <p>The following attribute means that property <code>user_id</code> should be treated as <code>id</code> and both are restricted to type <code>Integer</code>:</p> <pre><code class="takorogo">user_id =&gt; id: Integer
+</code></pre> <p>Since types of properties related to attributes can be inferred the following means the same as recent example:</p> <pre><code class="takorogo">user_id: Integer =&gt; id
+</code></pre> <p>Property <code>user_id_str</code> of <code>String</code> should be converted to <code>Integer</code> type and treated as <code>id</code> property:</p> <pre><code class="takorogo">user_id_str: String =&gt; id: Integer
+</code></pre> <p>This is how we can address and describe array items:</p> <pre><code class="takorogo">args[age: Integer, name: String]
+</code></pre> <p>When we destructured something we already know enough so renaming is redundant and ambiguous:</p> <pre><code class="takorogo"># Error
+program.args[age: Integer, name: String] =&gt; args
+</code></pre> <h3>Keys</h3> <p>Key is a list of properties separated by commas.</p> <p><strong>Examples</strong></p> <p>Two properties <code>longitude</code> and <code>latitude</code> of type <code>Float</code> is a key:</p> <pre><code class="takorogo">longitude: Float, latitude: Float
+</code></pre> <h3>Batch Renames</h3> <p>Batch rename is a two keys of the same length each enclosed by parenthesis and joined via renaming operator. Batch renames can be always converted to a tuple of attributes.</p> <p><strong>Examples</strong></p> <p>Here we strip "user_" part from <code>user_name</code> and <code>user_age</code> properties:</p> <pre><code class="takorogo">(user_name: String, user_age: Integer) =&gt; (name, age)
+</code></pre> <h3>Tuples</h3> <p>Tuple is a list of attributes and batch renames (see below) separated by commas and enclosed with parenthesis. Tuples related to keys as attributes to properties and could be considered as extended keys.</p> <p><strong>Examples</strong></p> <p>The followin key of properties <code>longitude</code> and <code>latitude</code> of type <code>Float</code> is a valid Tuple:</p> <pre><code class="takorogo">(longitude: Float, latitude: Float)
+</code></pre> <p>Properties <code>longitude</code> and <code>latitude</code> should be treated as <code>x</code> and <code>y</code> respectively:</p> <pre><code class="takorogo">(longitude: Float =&gt; x, latitude: Float =&gt; y)
+</code></pre> <p>Almost the same as previous example plus property <code>height</code> but written with batch renaming for <code>x</code> and <code>y</code>:</p> <pre><code class="takorogo">((longitude: Float, latitude: Float) =&gt; (x, y), height: Float =&gt; z)
+</code></pre> <h3>Relations</h3> <p>Describing document parts as a relations is a main feature of Takorogo. At the syntactic level relation is a binary operator that accepts facultative relation options (see below) and property as a relation target.</p> <p><strong>Examples</strong></p> <p>When we want to say that embedded object <code>author</code> is related to container as a <code>User</code> who posted it we can say:</p> <pre><code class="takorogo">--[ POSTED_BY ]--&gt; author:User
+</code></pre> <p>If relation is bilateral we can add the author also posted a tweet:</p> <pre><code class="takorogo">&lt;--[ POSTED | POSTED_BY ]--&gt; author:User
+</code></pre> <p>Other relation cases described in "Relation Options" section.</p> <h3>Links (Relation With Resolving)</h3> <p>Link is a specific type of relation when we do not have a whole object embedded in container but instead have a foreign key that points to it. Syntactically this is a ternary operator similar to relation. As a relation target it expects only type. And as a first operand it accepts relation key which can be a tuple or single batch renaming.</p> <p><strong>Examples</strong></p> <p>When we have a user ID and want to connect it with user with this ID we can specify it by this:</p> <pre><code class="takorogo">(user_id =&gt; id: Integer) --[ CREATED_BY ]--&gt; User
+</code></pre> <p>Notice that we should enclose even single attribute with parenthesis.</p> <p>We can use full power of batch renaming in relation keys:</p> <pre><code class="takorogo">(left, top, height) =&gt; (x, y, z) --[ POINTS_TO ]--&gt; Point
+</code></pre> <h3>Anonymous Relations And Links</h3> <p>There is an alias for relations without a name. This can be used in case when we do not care how something will be connected. Anonymous relations may be recommended or otherwise not advisable by concrete Takorogo consumers.</p> <p><strong>Examples</strong></p> <p>Nothing personal for users:</p> <pre><code class="takorogo">--&gt; user:Buddy
+</code></pre> <p>Same for the link case:</p> <pre><code class="takorogo">(longitude, latitude) =&gt; (x, y) --&gt; Point
+</code></pre> <h3>Relation Options</h3> <p>Each relation option consists one or two relation definition (see below) separated by <code>|</code>.</p> <p><strong>Examples</strong></p> <p>Relation is one way only or has equal names for both directions:</p> <pre><code class="takorogo">POSTED_BY
+</code></pre> <p>Bilateral relation with different names for each direction:</p> <pre><code class="takorogo">POSTED | POSTED_BY
+</code></pre> <h3>Relation Definitions</h3> <p>Relation definition is a symbolic name followed by optional tuple that defines relation attributes.</p> <p><strong>Examples</strong></p> <p>Let's say we want to save score as relation attribute for each played game:</p> <pre><code class="takorogo">--[PLAYED(score: Float)]--&gt; games:Game[]
+</code></pre> <p>Or put entry indices of has tag to relation that point to it:</p> <pre><code class="takorogo">--[TAGGED_WITH(indices[first: Integer, last: Integer])]--&gt; tags:HashTag[]
+</code></pre> <h3>Indexes</h3> <p>Index is a key prepended by reserved word <code>unique</code>.</p> <p><strong>Examples</strong></p> <p>Simple index:</p> <pre><code class="takorogo">unique id: Integer
+</code></pre> <p>Compound index:</p> <pre><code class="takorogo">unique longitude: Float, latitude: Float 
+</code></pre> <h3>Class Definitions</h3> <p>Class definition is what actually describes documents of certain type. Class definitions started from <code>def</code> keyword followed by symbolic name and then class definition rules surrounded in curly brackets.</p> <p><strong>Examples</strong></p> <pre><code class="takorogo">def Tweet {
+    # rule definitions
+}
+</code></pre> <h3>Class Definition Rules</h3> <p>Classes is a description of objects that consist attributes, relate or linked to other classes, restrained by indexes or serve as namespaces for other class definitions.</p> <p>So the following syntactic expressions can be used as class definition rules:</p> <ol> <li>Attribute</li> <li>Index</li> <li>Relation</li> <li>Link</li> <li>Class definition</li> </ol> <p><strong>Examples</strong></p> <p>Let's put everything together:</p> <pre><code class="takorogo">def Tweet {
+    unique id: Integer
+    unique id_str: String
+
+    location: String
+
+    &lt;--[POSTED]-- user:User
+
+    in_reply_to_id_str =&gt; id_str &lt;--[ REPLIED_WITH | REPLIED_TO ]--&gt; Tweet
+
+    def User {
+        unique id: Integer
+    }
+
+    # And many more...
+}
+</code></pre> <h3>Type Referring, Namespaces &amp; Shadowing</h3> <p>Each class serves as a namespace for internally declared classes and local declarations shadow parent ones.</p> <p>To access shadowed classes we can use paths in type references.</p> <p><strong>Examples</strong></p> <p>In this case <code>Profile.Image</code> refers to class defined inside internal class <code>Profile</code></p> <pre><code class="takorogo">img: Profile.Image # &lt;-- That one
+
+def Profile {
+    # points here:
+    def Image {
+        # rules
+    }    
+}
+</code></pre> <p>And here local definition shadows <code>Image</code> in parent namespace:</p> <pre><code class="takorogo"># This class
+def Image {
+    # rules
+}
+
+def Profile {
+    # is invisible from here
+    img: Profile.Image
+
+    # because of this new definition
+    def Image {
+        # rules
+    }
+
+    # but here we access parent definition directly
+    background: ../Image
+}
+</code></pre>
