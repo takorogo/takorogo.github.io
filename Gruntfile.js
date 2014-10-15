@@ -440,8 +440,19 @@ module.exports = function (grunt) {
                 command: 'mkdir wiki'
             },
             wiki: {
-                command: 'curl https://raw.githubusercontent.com/wiki/takorogo/takorogo.github.io/HOME.md -o wiki/Home.md'
+                command: 'curl https://raw.githubusercontent.com/wiki/takorogo/takorogo.github.io/Home.md -o wiki/Home.md'
             }
+        },
+
+        // DocToc
+        doctoc: {
+            options: {
+                bitbucket: false,
+                removeAd: true,
+                header: '## Table of Contents',
+                target: './wiki/Home.md'
+            },
+            wiki: {}
         },
 
         // Test settings
@@ -496,6 +507,7 @@ module.exports = function (grunt) {
         'clean:wiki',
         'shell:wikiDir',
         'shell:wiki',
+        'doctoc',
         'shell:markdown'
     ]);
 
