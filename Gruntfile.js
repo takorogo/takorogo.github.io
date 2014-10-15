@@ -513,7 +513,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('ci', [
         'test',
-        'build',
         'coveralls:ci'
     ]);
 
