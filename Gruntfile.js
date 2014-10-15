@@ -51,8 +51,8 @@ module.exports = function (grunt) {
             gruntfile: {
                 files: ['Gruntfile.js']
             },
-            readme: {
-                files: ['README.md'],
+            markdown: {
+                files: ['utils/markup_render.rb'],
                 tasks: ['wiki']
             },
             livereload: {
@@ -150,7 +150,7 @@ module.exports = function (grunt) {
             },
             server: '.tmp',
             coverage: 'coverage',
-            wiki: 'wiki'
+            wiki: [ 'wiki', 'app/**/*.md.html' ]
         },
 
         // Add vendor prefixed styles
@@ -433,7 +433,7 @@ module.exports = function (grunt) {
                 command: [
                     './utils/markup_render.rb',
                     __dirname + '/wiki/Home.md',
-                    __dirname + '/app/views/README.md.html'
+                    __dirname + '/app/views/Wiki.md.html'
                 ].join(' ')
             },
             wikiDir: {
