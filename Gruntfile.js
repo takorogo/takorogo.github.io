@@ -513,7 +513,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('ci', [
         'test',
-        'coveralls:ci'
+        'coveralls:ci',
+        'build',
+        'deploy'
     ]);
 
     grunt.registerTask('test', [
