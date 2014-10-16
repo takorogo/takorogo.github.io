@@ -417,6 +417,7 @@ module.exports = function (grunt) {
         // GitHub Pages settings
         'gh-pages': {
             options: {
+                repo: 'https://github.com/takorogo/takorogo.github.io.git',
                 base: 'dist',
                 branch: 'master'
             },
