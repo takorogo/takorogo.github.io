@@ -8,5 +8,5 @@ before_script:
   - 'gem install github-markup'
   - 'gem install github-markdown'
   - 'gem install html-pipeline'
-  - 'git config user.email "mikhail.zyatin@gmail.com"'
-  - 'git config user.name "Travis CI"'
+  - 'git config --global user.email "mikhail.zyatin@gmail.com"'
+  - 'git config --global user.name "Travis CI"'
