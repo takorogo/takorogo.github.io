@@ -515,7 +515,7 @@ module.exports = function (grunt) {
         'test',
         'coveralls:ci',
         'build',
-        'deploy'
+        'gh-pages'
     ]);
 
     grunt.registerTask('test', [
