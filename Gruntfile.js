@@ -417,7 +417,6 @@ module.exports = function (grunt) {
         // GitHub Pages settings
         'gh-pages': {
             options: {
-                repo: 'https://github.com/takorogo/takorogo.github.io.git',
                 base: 'dist',
                 branch: 'master'
             },
@@ -515,8 +514,7 @@ module.exports = function (grunt) {
     grunt.registerTask('ci', [
         'test',
         'coveralls:ci',
-        'build',
-        'gh-pages'
+        'build'
     ]);
 
     grunt.registerTask('test', [
